@@ -59,6 +59,10 @@ resource "azurerm_synapse_workspace" "synapse-workspace" {
       identity_ids = try(var.synapse.identity.identity_ids, [])
     }
   }
+
+  lifecycle {
+  ignore_changes = [azure_devops_repo, github_repo]
+  }
 }
 
 resource "azurerm_synapse_firewall_rule" "firewall-rules" {
