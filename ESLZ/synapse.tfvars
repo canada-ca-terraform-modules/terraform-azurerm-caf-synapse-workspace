@@ -4,7 +4,7 @@ synapse = {
     data_lake                     = "data_lake"
     sql_administrator_login       = "azureadmin"
     public_network_access_enabled = false
-    
+
     # Optional parameters
     # azuread_authentication_only          = false
     # compute_subnet_id                    = ""
@@ -14,6 +14,7 @@ synapse = {
     # managed_virtual_network_enabled      = false
     # public_network_access_enabled        = false
     # purview_id                           = ""
+    # sql_identity_control_enabled         = true  # Allow pipelines (workspace system identity) to access SQL pools
 
     # Optional
     # azure_devops_repo = [{
