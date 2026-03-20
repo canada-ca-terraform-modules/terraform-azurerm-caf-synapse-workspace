@@ -3,7 +3,7 @@ variable "synapse" {
 }
 
 module "synapse-workspace" {
-  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-synapse-workspace?ref=v1.0.0"
+  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-synapse-workspace?ref=v1.1.0"
   for_each = var.synapse
 
   userDefinedString = each.key
