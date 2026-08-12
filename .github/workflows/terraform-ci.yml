@@ -34,11 +34,11 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform Test
-        run: terraform test
-
       - name: TFLint Init
         run: tflint --init
 
       - name: TFLint
         run: tflint --recursive
+
+      - name: Terraform Test
+        run: terraform test

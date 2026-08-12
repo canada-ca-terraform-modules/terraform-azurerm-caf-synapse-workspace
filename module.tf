@@ -62,6 +62,11 @@ resource "azurerm_synapse_workspace" "synapse-workspace" {
   }
 
   lifecycle {
+    # Synapse validates/links repo configuration out-of-band via its own API after
+    # workspace creation (e.g. the GitHub UI auth flow), so the provider's view of
+    # these blocks can legitimately drift from what's declared here. Ignoring
+    # changes avoids terraform trying to "correct" a repo link that was
+    # intentionally reconfigured outside of Terraform.
     ignore_changes = [azure_devops_repo, github_repo]
   }
 }

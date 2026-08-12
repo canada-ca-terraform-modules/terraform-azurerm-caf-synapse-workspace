@@ -418,6 +418,7 @@ run "with_private_endpoint" {
       OZ = { id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-network/providers/Microsoft.Network/virtualNetworks/vnet/subnets/oz-subnet" }
     }
     synapse = {
+      name                    = "existing-prod-synapse"
       resource_group          = "Project"
       data_lake               = "https://mystorageaccount.dfs.core.windows.net/myfilesystem"
       sql_administrator_login = "sqladmin"
@@ -435,6 +436,48 @@ run "with_private_endpoint" {
   assert {
     condition     = length(module.private_endpoint) == 1
     error_message = "private_endpoint map must create one private_endpoint module instance per key"
+  }
+
+  # Regression test: local.synapse-effective-name (not the raw generated
+  # local.synapse-name) must flow into the private_endpoint module's name
+  # input so the endpoint name tracks a synapse.name override.
+  assert {
+    condition     = module.private_endpoint["blob"].name == "existing-prod-synapse-blob-pe"
+    error_message = "private_endpoint name must be derived from the effective (overridden) workspace name"
+  }
+}
+
+run "name_override_secret_naming" {
+  command = apply
+
+  # Regression test: the generated KV secret name must be derived from
+  # local.synapse-effective-name so it stays aligned with a synapse.name
+  # override, not the raw auto-generated name.
+  #
+  # Runs before generated_password_when_omitted (not after) - both target the
+  # same resource address (count = 1) sharing this file's state, and
+  # azurerm_key_vault_secret.sql-admin-password has lifecycle { ignore_changes
+  # = all }, so a later apply against an already-created instance would
+  # silently keep the first run's name instead of reflecting this override.
+  override_data {
+    target = data.azurerm_key_vault.key_vault[0]
+    values = {
+      id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-keyvault/providers/Microsoft.KeyVault/vaults/kv-test"
+    }
+  }
+
+  variables {
+    synapse = {
+      name                    = "existing-prod-synapse"
+      resource_group          = "Project"
+      data_lake               = "https://mystorageaccount.dfs.core.windows.net/myfilesystem"
+      sql_administrator_login = "sqladmin"
+    }
+  }
+
+  assert {
+    condition     = azurerm_key_vault_secret.sql-admin-password[0].name == "existing-prod-synapse-synapse-admin-password"
+    error_message = "KV secret name must be derived from the effective (overridden) workspace name"
   }
 }
 
