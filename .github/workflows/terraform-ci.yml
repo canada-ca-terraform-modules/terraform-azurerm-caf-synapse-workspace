@@ -13,12 +13,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4.0.0
+        uses: hashicorp/setup-terraform@v4.0.1
         with:
           terraform_version: "~>1.9"
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6.3.0
+        with:
+          tflint_version: "v0.64.0"
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
@@ -31,3 +36,9 @@ jobs:
 
       - name: Terraform Test
         run: terraform test
+
+      - name: TFLint Init
+        run: tflint --init
+
+      - name: TFLint
+        run: tflint --recursive

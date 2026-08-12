@@ -6,6 +6,7 @@ synapse = {
     public_network_access_enabled = false
 
     # Optional parameters
+    # name                                  = ""  # Optional: Override the auto-generated workspace name (default: {env}-{group}-{project}-{userDefinedString}-syn)
     # azuread_authentication_only          = false
     # compute_subnet_id                    = ""
     # data_exfiltration_protection_enabled = false

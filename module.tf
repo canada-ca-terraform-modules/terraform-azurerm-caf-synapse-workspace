@@ -1,5 +1,5 @@
 resource "azurerm_synapse_workspace" "synapse-workspace" {
-  name                                 = local.synapse-name
+  name                                 = try(var.synapse.name, local.synapse-name)
   resource_group_name                  = local.resource_group_name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = local.data_lake_id
@@ -28,7 +28,7 @@ resource "azurerm_synapse_workspace" "synapse-workspace" {
       project_name    = azure_devops_repo.value.project_name
       repository_name = azure_devops_repo.value.repository_name
       root_folder     = azure_devops_repo.value.root_folder
-      tenant_id       = try(azure_devops_repo.value.tenant_id, "")
+      tenant_id       = try(azure_devops_repo.value.tenant_id, null)
     }
   }
 
@@ -49,7 +49,7 @@ resource "azurerm_synapse_workspace" "synapse-workspace" {
       last_commit_id  = try(github_repo.value.last_commit_id, null)
       repository_name = github_repo.value.repository_name
       root_folder     = github_repo.value.root_folder
-      git_url         = try(github_repo.value.git_url, "")
+      git_url         = try(github_repo.value.git_url, null)
     }
   }
 
@@ -76,7 +76,7 @@ resource "azurerm_synapse_firewall_rule" "firewall-rules" {
 
 # Calls this module if we need a private endpoint attached to the storage account
 module "private_endpoint" {
-  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-private_endpoint.git?ref=v1.0.2"
+  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-private_endpoint.git?ref=v1.2.0"
   for_each = try(var.synapse.private_endpoint, {})
 
   name                           = "${local.synapse-name}-${each.key}"
