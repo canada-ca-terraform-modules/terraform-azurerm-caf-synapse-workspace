@@ -37,7 +37,7 @@ resource "random_password" "sql-admin-password" {
 # Creates a secret in the subscription keyvault if a generated password is necessary. Since it will be only an inital password, ignore all changes to it
 resource "azurerm_key_vault_secret" "sql-admin-password" {
   count        = try(var.synapse.sql_admin_password, "") == "" ? 1 : 0
-  name         = "${local.synapse-name}-synapse-admin-password"
+  name         = "${local.synapse-effective-name}-synapse-admin-password"
   value        = random_password.sql-admin-password[0].result
   key_vault_id = data.azurerm_key_vault.key_vault[0].id
   content_type = "password"

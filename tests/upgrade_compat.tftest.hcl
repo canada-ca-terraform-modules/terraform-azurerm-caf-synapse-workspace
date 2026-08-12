@@ -82,3 +82,26 @@ run "upgrade_plan_no_replacement" {
     error_message = "Upgrade plan: sql_identity_control_enabled must be true"
   }
 }
+
+# Step 3 — azurerm ~>4.0 -> ~>5.0 upgrade delta: the new synapse.name override
+# (Pattern 12) must default to the same generated name as the baseline, so
+# existing deployments see zero diff when the upgraded module code is applied
+# without callers changing anything.
+run "azurerm_5_upgrade_no_replacement" {
+  command = plan
+
+  variables {
+    synapse = {
+      resource_group               = "Project"
+      data_lake                    = "https://mystorageaccount.dfs.core.windows.net/myfilesystem"
+      sql_administrator_login      = "sqladmin"
+      sql_admin_password           = "TestP@ssw0rd!"
+      sql_identity_control_enabled = true
+    }
+  }
+
+  assert {
+    condition     = azurerm_synapse_workspace.synapse-workspace.name == "dev-corp-test-myws-syn"
+    error_message = "azurerm 5.0 upgrade: workspace name must remain unchanged when synapse.name is not set"
+  }
+}
