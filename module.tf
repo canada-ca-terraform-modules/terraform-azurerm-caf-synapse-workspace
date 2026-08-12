@@ -1,5 +1,5 @@
 resource "azurerm_synapse_workspace" "synapse-workspace" {
-  name                                 = try(var.synapse.name, local.synapse-name)
+  name                                 = local.synapse-effective-name
   resource_group_name                  = local.resource_group_name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = local.data_lake_id
@@ -79,7 +79,7 @@ module "private_endpoint" {
   source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-private_endpoint.git?ref=v1.2.0"
   for_each = try(var.synapse.private_endpoint, {})
 
-  name                           = "${local.synapse-name}-${each.key}"
+  name                           = "${local.synapse-effective-name}-${each.key}"
   location                       = var.location
   resource_groups                = var.resource_groups
   subnets                        = var.subnets

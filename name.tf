@@ -8,4 +8,5 @@ locals {
   project-regex_compliant_4                    = replace(lower(var.project), local.synapse-regex, "")
   synapse-userDefinedString-regex_compliant_16 = replace(lower(var.userDefinedString), local.synapse-regex, "")
   synapse-name                                 = "${local.env-regex_compliant_4}-${local.group-regex_compliant_4}-${local.project-regex_compliant_4}-${local.synapse-userDefinedString-regex_compliant_16}-syn"
+  synapse-effective-name                       = try(var.synapse.name, local.synapse-name)
 }

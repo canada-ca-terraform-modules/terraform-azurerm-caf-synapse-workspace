@@ -18,32 +18,38 @@ synapse = {
     # sql_identity_control_enabled         = true  # Allow pipelines (workspace system identity) to access SQL pools
 
     # Optional
-    # azure_devops_repo = [{
-    #   account_name = ""
-    #   branch_name = ""
-    #   last_commit_id = ""
-    #   project_name = ""
-    #   repository_name = ""
-    #   root_folder = ""
-    #   tenant_id = ""
-    # }]
+    # azure_devops_repo = {
+    #   repo1 = {
+    #     account_name    = ""
+    #     branch_name     = ""
+    #     last_commit_id  = ""
+    #     project_name    = ""
+    #     repository_name = ""
+    #     root_folder     = ""
+    #     tenant_id       = ""
+    #   }
+    # }
 
     # Optional
-    # customer_managed_key = [{
-    #   key_versionless_id = ""
-    #   key_name = ""
-    #   user_assigned_identity_id = ""
-    # }]
+    # customer_managed_key = {
+    #   cmk1 = {
+    #     key_versionless_id        = ""
+    #     key_name                  = ""
+    #     user_assigned_identity_id = ""
+    #   }
+    # }
 
     # Optional
-    # github_repo = [{
-    #   account_name = ""
-    #   branch_name = ""
-    #   last_commit_id = ""
-    #   repository_name = ""
-    #   root_folder = ""
-    #   git_url = ""
-    # }]
+    # github_repo = {
+    #   repo1 = {
+    #     account_name    = ""
+    #     branch_name     = ""
+    #     last_commit_id  = ""
+    #     repository_name = ""
+    #     root_folder     = ""
+    #     git_url         = ""
+    #   }
+    # }
 
     # Optional
     # firewall_rules = {
