@@ -1,3 +1,5 @@
+# Live-test CI wiring: .github/workflows/live-test.yml (PR B) exercises this
+# harness end-to-end.
 terraform {
   required_version = ">= 1.9"
   required_providers {
