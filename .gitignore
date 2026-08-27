@@ -15,6 +15,7 @@ override.tf.json
 *.tfvars
 *.tfvars.json
 !ESLZ/*.tfvars
+!test/live/config/*.tfvars
 
 # IDE
 .idea/
